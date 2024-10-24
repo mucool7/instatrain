@@ -1,0 +1,82 @@
+<div class="search">
+
+    <div>
+        <mat-form-field [appearance]="'outline'">
+    
+            <mat-label>From Station</mat-label>
+            <input type="text" matInput (input)="filterList($event.target,'departure')" [matAutocomplete]="auto1">
+            <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="onDepartureSelected($event.option.value)">
+                @for (option of departureFilteredStations ; track option) {
+                <mat-option [value]="option.en +' - ' +option.sc">{{option.en +' - ' +option.sc}}</mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+    
+    </div>
+    <div>
+        <mat-form-field [appearance]="'outline'">
+    
+            <mat-label>To Station</mat-label>
+            <input type="text" matInput (input)="filterList($event.target,'arrival')" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onArrivalSelected($event.option.value)">
+                @for (option of arrivalFilteredStations ; track option) {
+                <mat-option [value]="option.en +' - ' +option.sc">{{option.en +' - ' +option.sc}}</mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+    
+    </div>
+    <div>
+        <mat-form-field [appearance]="'outline'">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+    
+    </div>
+
+    <button mat-raised-button (click)="onSearch()">
+             Search
+    </button>
+
+</div>
+
+<div class="res">
+
+    <ng-container *ngFor="let train of trainWiseData">
+
+          <div style="padding: 20px;">
+              <div style="padding: 10px; font-weight: 500;white-space: nowrap;">{{train.trainNo}} {{train.trainInfo.trainName}} ( {{train.vtd?.length}} )</div>
+              <div *ngFor="let station of train.stations" style="padding: 2px;">
+                {{station.arrivalTime}} - {{station.stationName}} 
+              </div>
+          </div>
+    </ng-container>
+
+</div>
+
+
+<div *ngIf="trains && false">
+
+    <div *ngFor="let train of filteredStations" (click)="getTrainSchedule(train.code)">
+        {{train.code}} {{train.name}}
+    </div>
+
+</div>
+
+<div style="display: none;">
+    Vaccant Birth Data
+
+    <ng-container *ngIf="vaccantBerthData.length">
+        <div *ngFor="let h of getVaccantBerthFromData('PUNE')">
+
+            {{h.coachName}} {{h.berthNumber}} {{h.berthCode}} {{h.from}} ==> {{h.to}}
+
+            <div *ngFor="let d of getVaccantBerthFromData(h.to)">
+
+                {{d.coachName}} {{d.berthNumber}} {{d.berthCode}} {{h.from}} ==> {{d.to}}
+            </div>
+        </div>
+    </ng-container>
+</div>
