@@ -14,7 +14,7 @@ export class HttpService {
     let data={
       url,
       method:"get",
-      headers:{"greq":"5456434523"}
+      headers:{"greq":""+Math.floor((Math.random() * 10000000) + 100000)+""}
     }
     return this.post(this.relayUrl,data)
 
@@ -25,7 +25,7 @@ export class HttpService {
     let data={
       url,
       method:"get",
-      headers:{"greq":"5456434523"}
+      headers:{"greq":""+Math.floor((Math.random() * 10000000) + 100000)+""}
     }
     return this.postText(this.relayUrl,data)
 
@@ -37,7 +37,7 @@ export class HttpService {
       url,
       data:rdata,
       method:"post",
-      headers:{"greq":"5456434523"}
+      headers:{"greq":""+Math.floor((Math.random() * 10000000) + 100000)+""}
     }
     return this.post(this.relayUrl,data)
 

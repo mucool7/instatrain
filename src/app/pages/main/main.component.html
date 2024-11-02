@@ -47,12 +47,40 @@
     <ng-container *ngFor="let train of trainWiseData">
 
           <div style="padding: 20px;">
+             
               <div style="padding: 10px; font-weight: 500;white-space: nowrap;">{{train.trainNo}} {{train.trainInfo.trainName}} ( {{train.vtd?.length}} )</div>
-              <div *ngFor="let station of train.stations" style="padding: 2px;">
-                {{station.arrivalTime}} - {{station.stationName}} 
+              <div *ngFor="let station of train.stations;let i = index;" style="padding: 0px;margin: 0px;">
+                <div style="display: flex;">
+                    <div>
+
+                         
+                    </div>
+
+                    <div>
+                        <div *ngIf="isStationExists(train.trainNo,station.stationCode,train.stations[i].stationCode)" style="background-color: green;"><span style="visibility: hidden;">.</span></div>
+                        <div *ngIf="isStationExists(train.trainNo,station.stationCode,train.stations[i+1]?.stationCode)" style="background-color: green;"><span style="visibility: hidden;">.</span></div>
+                        <div *ngIf="!isStationExists(train.trainNo,station.stationCode,train.stations[i+1]?.stationCode) && isStationExists(train.trainNo,station.stationCode,train.stations[i].stationCode)" style="background-color: red;" > <span style="visibility: hidden;">.</span> </div>
+                        <div *ngIf="!isStationExists(train.trainNo,station.stationCode,train.stations[i+1]?.stationCode)" style="background-color: red;" > <span style="visibility: hidden;">.</span> </div>
+                        <div *ngIf="!isStationExists(train.trainNo,station.stationCode,train.stations[i]?.stationCode)" style="background-color: red;" > <span style="visibility: hidden;">.</span> </div>
+                    </div>
+                    <div style="padding: 0px 12px;">
+
+                        <span >{{station.arrivalTime}} - {{station.stationName}}</span>  
+                    </div>
+
+                </div> 
               </div>
           </div>
     </ng-container>
+
+</div>
+
+
+<div *ngIf="berthData.length">
+
+    <div *ngFor="let train of berthData">
+        {{train.coachName}} {{train.berthNumber}}  {{train.from}} -> {{train.to}}
+    </div>
 
 </div>
 
@@ -65,17 +93,17 @@
 
 </div>
 
-<div style="display: none;">
+<div style="display: flex;">
     Vaccant Birth Data
 
-    <ng-container *ngIf="vaccantBerthData.length">
-        <div *ngFor="let h of getVaccantBerthFromData('PUNE')">
+    <ng-container>
+        <div *ngFor="let h of berthData">
 
-            {{h.coachName}} {{h.berthNumber}} {{h.berthCode}} {{h.from}} ==> {{h.to}}
+            {{h.trainNo}} 
 
-            <div *ngFor="let d of getVaccantBerthFromData(h.to)">
+            <div *ngFor="let d of h.data">
 
-                {{d.coachName}} {{d.berthNumber}} {{d.berthCode}} {{h.from}} ==> {{d.to}}
+                {{d.coachName}} {{d.berthNumber}} {{d.berthCode}} ______ {{d.from}} ==> {{d.to}}
             </div>
         </div>
     </ng-container>
